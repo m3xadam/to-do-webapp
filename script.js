@@ -5,6 +5,8 @@ var taskCounter = document.getElementById('taskCounter');
 
 
 
+
+
 function task(){
     let li = document.createElement("li");
     
@@ -114,6 +116,11 @@ function updateCounter(){
 }
 taskAdd.addEventListener('click', function(){
     
+    if(taskInput.value.trim() === ""){
+    alert("No Task Written")
+
+    return;
+}
     
     
     task();

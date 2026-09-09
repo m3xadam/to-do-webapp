@@ -82,6 +82,7 @@ ul{
     width: 90%;
     height: 80%;
     border-radius: 10px;
+    overflow-y: scroll;
 
 }
 li{
@@ -123,13 +124,20 @@ li:hover{
         height: 5%;
     }
     .Canvas{
+        display: flex;
+        flex-direction: column;
         width: 100%;
         height: 100vh;
         gap: 30px;
+        overflow-y: scroll;
     }
 
     #parent{
+        overflow-y: scroll;
         width: 100%;
-        height: 80%;
+        height: 90%;
+    }
+    #taskCounter{
+        color: grey;
     }
 }
