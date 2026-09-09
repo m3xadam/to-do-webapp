@@ -1,0 +1,320 @@
+var userInput = document.getElementById("userInput");
+var submit = document.getElementById("submit");
+var list = document.getElementById("parent");
+var dateInput = document.getElementById("dateInput");
+var showDate = document.getElementById("showDate");
+
+var userTaskInfo = document.getElementById('userpanel');
+
+var userGreeting = document.getElementById("userGreeting");
+
+let hour = new Date().getHours();
+
+let panel = document.querySelector(".mainbtn");
+let panelUl = document.querySelector(".ulList");
+
+let addTaskBtn = document.createElement("button");
+addTaskBtn.textContent = "Add Task";
+
+panel.appendChild(addTaskBtn);
+
+addTaskBtn.addEventListener("click", function() {
+    let taskbox = document.createElement('div');
+    let taskInput = document.createElement("input");
+    taskInput.type = "text";
+    taskInput.placeholder = "Write your task";
+    taskInput.style.width = '80%';
+    taskInput.style.height = '20%';
+    
+    let removeTask = document.createElement('button');
+    removeTask.textContent = "X";
+    removeTask.style.backgroundColor = "red";
+    removeTask.style.color = "white";
+    removeTask.style.fontSize = ".8rem";
+
+
+    panelUl.appendChild(taskbox);
+    taskbox.appendChild(taskInput);
+    taskbox.appendChild(removeTask);
+
+    removeTask.addEventListener("click",function(){
+        taskbox.remove();
+        console.log("x clicked")
+        render();    
+    })
+
+});
+
+
+let taskGroup = [
+{
+    id:1,
+    title : userInput.value ,
+
+    tasks: []
+}
+];
+
+if (hour < 12){
+    userGreeting.textContent ="Good morning";
+}
+else if (hour < 18){
+    userGreeting.textContent ="Good afternoon";
+}
+else{
+    userGreeting.textContent ="Good evening";
+}
+
+let showtoday = new Date();
+
+showDate.textContent = 
+showtoday.toLocaleDateString("en-us",{
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+});
+
+
+function getBucket(dueDate){
+    const today = new Date().toISOString().split('T')[0];
+    if (dueDate < today) return "Overdue";
+    if (dueDate === today) return "Today";
+
+    return "Upcoming";
+
+}
+
+function updateCounters(){
+    const total = tasks.length;
+    const done = tasks.filter(t=> t.done).length;
+    const overdue = tasks.filter(t=> !t.done && getBucket(t.dueDate)=== "Overdue").length;
+    const pending = total - done;
+
+    document.getElementById("counter1").textContent = total;
+    document.getElementById("counter2").textContent = done;
+    document.getElementById("counter3").textContent = overdue;
+    document.getElementById("counter4").textContent = pending;
+}
+function render(){
+    list.innerHTML = '';
+
+    taskGroup.forEach(function(group){
+
+        let heading = document.createElement("h2");
+        heading.textContent = group.title;
+
+        let deleteGroupBtn = document.createElement("button");
+        deleteGroupBtn.textContent = "Delete Group";
+
+        deleteGroupBtn.addEventListener('click', function(){
+            let index = taskGroup.indexOf(group);
+            taskGroup.splice(index,1);
+
+            render();
+        })
+
+        heading.appendChild(deleteGroupBtn);
+
+        let ul = document.createElement("ul");
+
+        group.tasks.forEach(function(task){
+
+            let li = document.createElement("li");
+
+            let deletebtn = document.createElement("button");
+            deletebtn.textContent = "Delete";
+            
+            deletebtn.addEventListener("click", function() {
+                let index = group.tasks.indexOf(task);
+                 group.tasks.splice(index, 1);
+
+                render();
+            });
+
+
+            let toggle = document.createElement("input");
+            toggle.type = "checkbox";
+            toggle.checked = task.done;
+
+            let event = document.createElement("span");
+            event.textContent = task.text;
+
+            if (task.done) {
+                event.style.textDecoration = "line-through";
+            }
+
+
+            toggle.addEventListener("change", function() {
+
+                task.done = toggle.checked;
+
+                if (task.done) {
+                    event.style.textDecoration = "line-through";
+                } else {
+                    event.style.textDecoration = "none";
+                }
+            });
+
+            li.appendChild(toggle);
+            li.appendChild(event);
+            li.appendChild(deletebtn);
+            
+            ul.appendChild(li);
+        });
+
+        list.appendChild(heading);
+        list.appendChild(ul);
+    });
+
+
+    
+    /*
+    const group = {Today:[], Upcoming: [], Overdue: []};
+    tasks.forEach(t=> group[getBucket(t.dueDate)].push(t));
+    
+    ["Today", "Upcoming", "Overdue"].forEach(groupName => {
+        const items = group[groupName].sort((a,b)=>a.dueDate.localeCompare(b.dueDate));
+        if(items.length === 0) return;
+
+        let heading = document.createElement("h4");
+        heading.textContent = groupName;
+        list.appendChild(heading);
+
+        items.forEach(task => list.appendChild(buildTaskElements(task)));
+
+    });
+    */
+
+    updateCounters();
+}
+
+
+/*
+function buildTaskElements(task){
+
+
+// creating the title for the task
+
+    let heading = document.createElement("h2");
+
+    heading.textContent = taskGroup[0].title;
+
+    list.appendChild(heading);
+
+    // creating the children using li
+
+    let ul = document.createElement("ul");
+
+    groups[0].tasks.forEach(function(task) {
+
+    let li = document.createElement("li");
+
+    li.textContent = task.text;
+
+    ul.appendChild(li);
+});
+
+    list.appendChild(ul);
+
+
+
+
+
+    let toggle = document.createElement("input");
+    toggle.type = "checkbox";
+    let wrapper = document.createElement("div");
+    wrapper.style.display = "flex";
+    wrapper.style.gap = "15px";
+    let container = document.createElement("li");
+    container.style.display = "flex";
+    container.style.justifyContent = "space-between";
+    container.style.alignItems = "center"; 
+    container.style.height = "50px";
+    container.style.padding = ".5rem";
+    container.style.borderRadius = "5px";
+    container.style.borderBottom = "1px solid grey";
+    let event = document.createElement("h5");
+    event.textContent = task.text; 
+    let dete = document.createElement("button");
+    dete.style.appearance = "none";
+    dete.style.width = '100px'
+    dete.style.height = '90%'
+    dete.style.justifyContent = "space-between";
+    dete.textContent = "Remove"
+    dete.style.border = "none";
+    dete.style.color = "white";
+    dete.style.cursor = 'pointer';
+    dete.style.borderRadius = "15px";
+    dete.style.backgroundColor = "red";
+
+
+    toggle.checked = task.done;
+
+    dete.addEventListener("click", function(){
+        tasks = tasks.filter(t=> t.id !== task.id);
+
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+
+        render();
+    })
+
+      toggle.addEventListener("click", function(){
+        task.done = toggle.checked;
+
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        
+        event.style.textDecoration  = task.done?"line-through" : "none";
+
+        updateCounters();
+        })
+    
+
+    wrapper.appendChild(toggle);
+    wrapper.appendChild(event);
+    container.appendChild(wrapper);
+    container.appendChild(dete);
+    return container;
+}
+*/
+
+submit.addEventListener("click", function(){
+
+    
+    if( userInput.value === ''){
+    
+        alert("field cannot be empty")
+    
+        return;
+    }
+    
+    if(dateInput.value === ''){
+        alert('please pick a date');
+        return;
+    }
+
+    taskGroup[0].title
+
+    taskGroup[0].tasks.push({
+        id:Date.now(),
+        text: userInput.value,
+        dueDate:dateInput.value,
+        done:false
+    });
+
+    userTaskInfo.style.display = "none";
+
+    userInput.value = "";
+    dateInput.value = '';
+    render();
+})
+
+document.getElementById('dateInput').addEventListener('click', () =>{
+    try{
+    dateInput.showPicker();
+    } catch(err) {
+        console.log("showPicker failed:", err);
+    }
+});
+
+render();
