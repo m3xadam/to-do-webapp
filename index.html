@@ -13,7 +13,7 @@
     <div class="Canvas">
         <h1>To<i>do</i></h1>
         <div class="userinput">
-            <input type="text" placeholder="Write task" id="taskInput">
+            <input type="text" placeholder="Write task" id="taskInput" maxlength="30">
              <button id="addTask">+</button>
         </div>
         <h5 id="taskCounter"></h5>
@@ -25,6 +25,7 @@
 
 
     <script src="script.js"></script>
+    
     <script>
         if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
@@ -38,5 +39,6 @@
         });
     }
     </script>
+    
 </body>
 </html>

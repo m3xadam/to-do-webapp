@@ -56,7 +56,7 @@ function task(savedTask){
     
     let span = document.createElement('span')
     
-    span.textContent = savedTask? savedTask.text:taskInput.value; 
+    span.textContent = savedTask? savedTask.text:taskInput.value;
     span.style.outline = 'none';
     span.contentEditable = 'false';
 
