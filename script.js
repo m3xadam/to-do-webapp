@@ -22,6 +22,8 @@ function loadTask(){
 
 
 
+
+
 function task(savedTask){
     let newTask = savedTask || {
         id:Date.now(),
@@ -32,7 +34,7 @@ function task(savedTask){
     let li = document.createElement("li");
     
     li.classList.add('li');
-    li.style.paddingLeft = '15px'
+
     
     
     

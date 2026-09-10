@@ -25,6 +25,12 @@ body{
     width: 50%;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
+#parent{
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+
+}
 .Canvas h1{
     font-size: 3rem;
     font-weight: bold;
@@ -87,6 +93,7 @@ ul{
 }
 li{
     display: flex;
+    flex-shrink: 0;
     padding: .5rem;
     cursor: pointer;
     border-bottom: 1px solid rgba(0, 0, 0, .1);
@@ -102,6 +109,10 @@ li span{
 li:hover{
     color: white;
     background-color: black;
+}
+
+li:hover button{
+    color: red;
 }
 
 .delete{
