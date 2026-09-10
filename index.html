@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="manifest" href="manifest.json">
+    <link rel="shortcut icon" href="favicon.ico.png" type="image/x-icon">
     <meta charset="UTF-8">
+    <meta name="theme-color" content="#000000">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Todo List</title>
@@ -13,14 +16,27 @@
             <input type="text" placeholder="Write task" id="taskInput">
              <button id="addTask">+</button>
         </div>
+        <h5 id="taskCounter"></h5>
         <ul id="parent">
            
-        </ul>
-        <h5 id="taskCounter"></h5>
+    </ul>
         
     </div>
 
 
     <script src="script.js"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("./sw.js")
+                .then(() => {
+                    console.log("Service Worker registered");
+                })
+                .catch(error => {
+                    console.log("Service Worker registration failed:", error);
+                });
+        });
+    }
+    </script>
 </body>
 </html>

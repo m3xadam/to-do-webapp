@@ -2,12 +2,33 @@ var taskInput = document.getElementById('taskInput');
 var taskList = document.getElementById('parent');
 var taskAdd = document.getElementById('addTask');  
 var taskCounter = document.getElementById('taskCounter');
+var tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+
+function save (){
+    localStorage.setItem('tasks',
+        JSON.stringify(tasks));
+    
+}
+
+
+function loadTask(){
+    for(let savedTask of tasks){
+        task(savedTask)
+    }
+
+    updateCounter();
+}
 
 
 
+function task(savedTask){
+    let newTask = savedTask || {
+        id:Date.now(),
+        text:taskInput.value,
+        done:false
+    };
 
-
-function task(){
     let li = document.createElement("li");
     
     li.classList.add('li');
@@ -27,14 +48,19 @@ function task(){
 
     let toggle = document.createElement('input');
     toggle.type = 'checkbox';
+    toggle.checked = newTask.done;
 
 
     
     let span = document.createElement('span')
     
-    span.textContent = taskInput.value; 
+    span.textContent = savedTask? savedTask.text:taskInput.value; 
     span.style.outline = 'none';
     span.contentEditable = 'false';
+
+    if(newTask.done){
+        span.style.textDecoration = 'line-through';
+    }
     
     span.addEventListener('click', function(){
         
@@ -64,33 +90,35 @@ function task(){
     remove.addEventListener('click', function(){
         li.remove();
 
+        tasks = tasks.filter(function(item){
+            return item.id !== newTask.id;
+        });
+
+        save();
         updateCounter();
     })
 
     toggle.addEventListener('click', function(){
         
-        doneTask = 0;
         
+        newTask.done = toggle.checked;   
         
-        
-        
-        if(toggle.checked === true){
+        if(toggle.checked){
             span.style.textDecoration = 'line-through';
         }
         else{
             span.style.textDecoration = 'none';
-        }
-        
-        
-        
-     
-        
-        
+        } 
+
+        save();
         updateCounter();
-       
-    })
+        
+    });
     
-    
+    if(!savedTask){
+        tasks.push(newTask);
+        save();
+    }
     
     
     
@@ -128,3 +156,4 @@ taskAdd.addEventListener('click', function(){
     taskInput.value = "";
 });
 
+loadTask();

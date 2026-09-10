@@ -1,0 +1,31 @@
+{
+    "name": "Todo",
+    "short_name": "Todo",
+    "description": "A simple and easy-to-use Todo app",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme": "#000000",
+    "orientation": "portrait",
+    "icons":[{
+        "src": "./512px.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    },
+    {
+        "src": "./192px.png",
+        "sizes": "192x192",
+        "type": "image/png"
+    }
+    ],
+
+    "screenshots":[
+    {
+        "src":"./Capture.png",
+        "sizes": "1920x933",
+        "type": "image/png",
+        "form_factor": "wide"
+    }
+    ]
+
+}
