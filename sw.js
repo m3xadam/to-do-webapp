@@ -1,4 +1,4 @@
-const CACHE_NAME = "todo-app-v1";
+const CACHE_NAME = "todo-app-v1.0.0.0.0.1";
 
 const FILES_TO_CACHE = [
     "./",
